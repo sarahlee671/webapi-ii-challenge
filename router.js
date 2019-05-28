@@ -28,18 +28,6 @@ router.get('/:id', async (req, res) => {
 });
 
 
-// router.get('/:id/comments', (req, res) => {
-//     db.findCommentById(req.params.id)
-//         .then(comments => {
-//             res.status(200).json(comments);
-//         }) 
-           
-        
-//         .catch(error => {
-//             res.status(500).json({ error: "The comments information could not be retrieved."})
-//         })
-// })
-
 router.get('/:id/comments', (req, res) => {
     db
         .findCommentById(req.params.id)
@@ -52,12 +40,26 @@ router.get('/:id/comments', (req, res) => {
         })
         .catch(error => {
             res.status(500).json({ error: "The comments information could not be retrieved."})
-        
         })
-
 })
 
-
+router.post('/', (req, res) => {
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
+    } 
+    db
+        .insert({
+            title,
+            contents
+        })
+        .then(post => {
+            res.status(201).json(post)
+        })
+        .catch(error => {
+            res.status(500).json({ error: "There was an error while saving the post to the database"})
+        })
+})
 
 
 module.exports = router;
