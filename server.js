@@ -7,9 +7,11 @@ const server = express();
 server.use(express.json());
 
 server.get('/', (req, res) => {
-    res.send(`
-        <h1>Welcome to webapi-ii-challenge</h1>
-    `)
+    res.status(200).json({
+        message: process.env.GREET,
+
+    
+    });
 });
 
 server.use('/api/posts', router);
